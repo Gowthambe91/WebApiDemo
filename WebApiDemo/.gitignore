@@ -1,0 +1,6 @@
+WebApiDemo/bin/*.dll
+WebApiDemo/bin
+WebApiDemo/obj
+WebApiDemo/packages
+/packages
+
