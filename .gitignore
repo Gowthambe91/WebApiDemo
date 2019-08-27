@@ -1,0 +1,6 @@
+/.vs/config/*.config
+/WebApiDemo/bin
+/WebApiDemo/obj
+/Packages
+/.vs/WebApiDemo/v15/*.suo
+/*.sln
