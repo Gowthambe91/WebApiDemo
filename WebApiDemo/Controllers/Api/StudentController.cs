@@ -34,6 +34,32 @@ namespace WebApiDemo.Controllers
             return Ok(students);
         }
 
+        public IHttpActionResult GetStudentByName(string studentName)
+        {
+            StudentViewModel student = null;
+            using (var ctx = new MyTestDBEntities())
+            {
+                student = ctx.Students.Include("Standard").Where(s => s.FirstName == studentName).Select(s => new StudentViewModel()
+                {
+                    Id = s.StudentID,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    Standard = new StandardViewModel()
+                    {
+                        Name = s.Standard.StandardName,
+                        StandardId = s.Standard.StandardID
+                    }
+                }).FirstOrDefault<StudentViewModel>();
+            }
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(student);
+        }
+
         public IHttpActionResult GetStudentById(int studentId)
         {
             StudentViewModel student = null;
