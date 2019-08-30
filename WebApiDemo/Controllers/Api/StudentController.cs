@@ -179,23 +179,23 @@ namespace WebApiDemo.Controllers
         //    return Ok(students);
         //}
 
-        public IHttpActionResult PostNewStudent(StandardViewModel standard)
+        public IHttpActionResult PostNewStudent(StudentViewModel student)
         {
             if (ModelState.IsValid)
             {
                 using (var ctx = new MyTestDBEntities())
                 {
-                    ctx.Standards.Add(new Standard()
+                    ctx.Students.Add(new Student()
                     {
-                        StandardID = standard.StandardId,
-                        StandardName = standard.Name,
-                        Description = standard.Name
+                        FirstName = student.FirstName,
+                        LastName = student.LastName,
+                        StandardID = 3 // Hard coded to make it create , need to look after the descrepancy of sql tables and edmx classes against tutorial teacher..!
                         //StandardID = student.Standard.StandardId
                     });
 
                     ctx.SaveChanges();
                 }
-                return Created(Request.RequestUri + "/" + standard.StandardId.ToString(), standard);
+                return Created(Request.RequestUri + "/" + student.Id.ToString(), student);
             }
             else
                 return BadRequest("Invalid data.");
@@ -228,7 +228,7 @@ namespace WebApiDemo.Controllers
 
         public IHttpActionResult Delete(int studentId)
         {
-            if (studentId > 0)
+            if (studentId >= 0)
             {
                 using (var ctx = new MyTestDBEntities())
                 {
