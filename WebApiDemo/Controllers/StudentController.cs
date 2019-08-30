@@ -153,26 +153,74 @@ namespace WebApiDemo.Controllers
         //    return Ok(students);
         //}
 
-        public IHttpActionResult PostNewStudent(StudentViewModel student)
+        public IHttpActionResult PostNewStudent(StandardViewModel standard)
         {
             if (ModelState.IsValid)
             {
                 using (var ctx = new MyTestDBEntities())
                 {
-                    ctx.Students.Add(new Student()
+                    ctx.Standards.Add(new Standard()
                     {
-                        //StudentID = student.Id,
-                        FirstName = student.FirstName,
-                        LastName = student.LastName,
+                        StandardID = standard.StandardId,
+                        StandardName = standard.Name,
+                        Description = standard.Name
                         //StandardID = student.Standard.StandardId
                     });
 
                     ctx.SaveChanges();
                 }
-                return Created(Request.RequestUri + "/" + student.Id.ToString(), student);
+                return Created(Request.RequestUri + "/" + standard.StandardId.ToString(), standard);
             }
             else
                 return BadRequest("Invalid data.");
+        }
+
+        public IHttpActionResult Put(int studentId, StudentViewModel student)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var ctx = new MyTestDBEntities())
+                {
+                    var existingStudent = ctx.Students.FirstOrDefault(s => s.StudentID == studentId);
+                    if (existingStudent == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingStudent.FirstName = student.FirstName;
+                    existingStudent.LastName = student.LastName;
+
+                    ctx.SaveChanges();
+                    return StatusCode(HttpStatusCode.OK);
+                }
+            }
+            else
+            {
+                return BadRequest("Invalid Data.");
+            }
+        }
+
+        public IHttpActionResult Delete(int studentId)
+        {
+            if (studentId > 0)
+            {
+                using (var ctx = new MyTestDBEntities())
+                {
+                    var existingStudent = ctx.Students.FirstOrDefault(s => s.StudentID == studentId);
+                    if (existingStudent == null)
+                    {
+                        return NotFound();
+                    }
+
+                    ctx.Entry(existingStudent).State = System.Data.Entity.EntityState.Deleted;                    
+                    ctx.SaveChanges();
+                    return StatusCode(HttpStatusCode.OK);
+                }
+            }
+            else
+            {
+                return BadRequest("Invalid Student ID.");
+            }
         }
     }
 }
