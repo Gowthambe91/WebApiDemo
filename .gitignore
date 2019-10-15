@@ -4,3 +4,10 @@
 /Packages
 /.vs/WebApiDemo/v15/*.suo
 
+/AJAXClientApp/bin
+/AJAXClientApp/obj/Debug/*.cache
+/AJAXClientApp/obj/Debug/*.dll
+/AJAXClientApp/obj/Debug/*.pdb
+/AJAXClientApp/obj/Debug
+/WebApiDemo/Properties/PublishProfiles/*.pubxml
+/WebApiDemo/Properties/PublishProfiles/*.user
